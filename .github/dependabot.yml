@@ -1,6 +1,10 @@
 # Keep the SHA-pinned actions current. Pinning makes the supply chain
 # immutable, not up to date — without this, pins go stale silently
 # (deprecated runtimes, missing fixes) while ratchet stays green.
+#
+# Cooldown: bump PRs wait until a release is 7 days old, so this repo
+# is never among the first installers of a compromised release.
+# Security (CVE) updates bypass the cooldown and fire immediately.
 version: 2
 updates:
   - package-ecosystem: github-actions
@@ -10,3 +14,5 @@ updates:
       day: thursday
       time: "09:00"
       timezone: America/Vancouver
+    cooldown:
+      default-days: 7

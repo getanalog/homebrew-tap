@@ -34,6 +34,30 @@ jobs:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: printf '%s\n%s\n' "$PR_TITLE" "$PR_BODY" | ./scripts/hygiene.sh --stdin
 
+  workflows:
+    name: "workflows: SHA-pin + security lint"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # ratchet:actions/checkout@v7.0.0
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # ratchet:astral-sh/setup-uv@v8.1.0
+        with:
+          enable-cache: false
+      - name: ratchet lint (every action pinned to a full SHA)
+        # Checksum is the publisher's own SHA512SUMS for v0.11.4.
+        run: |
+          set -euo pipefail
+          curl -sSfL -o ratchet.tar.gz https://github.com/sethvargo/ratchet/releases/download/v0.11.4/ratchet_0.11.4_linux_amd64.tar.gz
+          echo "b42ad0e83c53ae308d36f2d0256249aee98325ceb6f7cb5e29fe9eb411f23b4521d43adcfb2722c9ad2cc09012d485c1292f06e40985531260dee82d9b1a637d  ratchet.tar.gz" | sha512sum -c -
+          tar -xzf ratchet.tar.gz ratchet
+          ./ratchet lint .github/workflows/*.yml
+      - name: zizmor (workflow security audit)
+        run: |
+          set -euo pipefail
+          uvx --from zizmor==1.26.1 zizmor --offline --min-severity low .github/workflows/
+
   formula:
     name: "formula: style + audit + install + smoke"
     runs-on: macos-latest

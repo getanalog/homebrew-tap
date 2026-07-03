@@ -47,6 +47,10 @@ jobs:
           enable-cache: false
       - name: Register this checkout as the tap
         run: |
+          # The runner image ships third-party taps (aws/tap) that
+          # nobody trusted; brew warns loudly about them on every
+          # command. Not ours, not needed: drop them for clean logs.
+          brew untap aws/tap 2>/dev/null || true
           TAPDIR="$(brew --repository)/Library/Taps/getanalog"
           mkdir -p "$TAPDIR"
           ln -sfn "$GITHUB_WORKSPACE" "$TAPDIR/homebrew-tap"

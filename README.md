@@ -11,6 +11,8 @@ brew install getanalog/tap/analog
 
 Use the full name. There's an unrelated `analog` in homebrew-core (a
 logfile analyzer), and plain `brew install analog` gets you that one.
+The fully-qualified form also keeps Homebrew's tap-trust scoped to
+this one formula, so no separate `brew trust` step is needed.
 
 First run:
 

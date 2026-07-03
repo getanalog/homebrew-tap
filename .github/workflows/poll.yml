@@ -1,0 +1,42 @@
+# Daily check that the formula hasn't fallen behind PyPI. If it has,
+# run the same bump the maintainer would have dispatched.
+name: Poll PyPI
+
+on:
+  schedule:
+    - cron: "17 15 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      lagging: ${{ steps.check.outputs.lagging }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # ratchet:actions/checkout@v7.0.0
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # ratchet:astral-sh/setup-uv@v8.1.0
+        with:
+          enable-cache: false
+      - name: Compare the formula pin against PyPI
+        id: check
+        run: |
+          set -euo pipefail
+          if uv run --with packaging python scripts/regenerate.py --check; then
+            echo "lagging=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "lagging=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  bump:
+    needs: check
+    if: needs.check.outputs.lagging == 'true'
+    uses: ./.github/workflows/bump.yml
+    permissions:
+      contents: write
+      pull-requests: write

@@ -1,0 +1,73 @@
+# Prove the formula the way a user consumes it: real install, then the
+# first commands they'd type.
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    name: "hygiene: no internal references"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # ratchet:actions/checkout@v7.0.0
+        with:
+          persist-credentials: false
+      - name: Scan the tree
+        # This repo is public and sits outside the private repo's
+        # hygiene scanners, so it carries its own. Allowlist shape;
+        # see scripts/hygiene.sh.
+        run: ./scripts/hygiene.sh
+      - name: Scan the PR title and body
+        # GitHub metadata is public surface too, and the tree scan
+        # can't see it. Routed through env, never interpolated into
+        # the script (template injection).
+        if: github.event_name == 'pull_request'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: printf '%s\n%s\n' "$PR_TITLE" "$PR_BODY" | ./scripts/hygiene.sh --stdin
+
+  formula:
+    name: "formula: style + audit + install + smoke"
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # ratchet:actions/checkout@v7.0.0
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # ratchet:astral-sh/setup-uv@v8.1.0
+        with:
+          enable-cache: false
+      - name: Register this checkout as the tap
+        run: |
+          TAPDIR="$(brew --repository)/Library/Taps/getanalog"
+          mkdir -p "$TAPDIR"
+          ln -sfn "$GITHUB_WORKSPACE" "$TAPDIR/homebrew-tap"
+      - name: brew style
+        run: brew style getanalog/tap
+      - name: brew audit
+        run: brew audit --strict getanalog/tap/analog
+      - name: brew install
+        run: brew install getanalog/tap/analog
+      - name: Smoke the installed CLI
+        run: |
+          set -euo pipefail
+          "$(brew --prefix)/bin/analog" --version
+          "$(brew --prefix)/bin/analog" --help
+      - name: brew test
+        run: brew test getanalog/tap/analog
+      - name: Formula matches the generator
+        # no hand-edited pins sneaking in
+        run: |
+          set -euo pipefail
+          VERSION="$("$(brew --prefix)/bin/analog" --version | awk '{print $3}')"
+          cp Formula/analog.rb /tmp/committed.rb
+          uv run --with packaging python scripts/regenerate.py --version "$VERSION"
+          diff -u /tmp/committed.rb Formula/analog.rb

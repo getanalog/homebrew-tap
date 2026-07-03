@@ -1,0 +1,64 @@
+# Bump the formula to a new analog-sdk version and open a PR.
+#
+# Normally dispatched by the maintainer right after a PyPI release:
+#   gh workflow run bump.yml -R getanalog/homebrew-tap
+# The daily poller (poll.yml) calls this too, in case that's forgotten.
+#
+# Needs "Allow GitHub Actions to create and approve pull requests"
+# enabled under Settings -> Actions -> General.
+name: Bump formula
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "analog-sdk version to pin (empty = latest on PyPI)"
+        required: false
+        default: ""
+  workflow_call:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      INPUT_VERSION: ${{ inputs.version }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # ratchet:actions/checkout@v7.0.0
+        with:
+          persist-credentials: true # this job pushes the bump branch
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # ratchet:astral-sh/setup-uv@v8.1.0
+        with:
+          enable-cache: false
+      - name: Regenerate the formula
+        run: |
+          set -euo pipefail
+          if [ -n "$INPUT_VERSION" ]; then
+            uv run --with packaging python scripts/regenerate.py --version "$INPUT_VERSION"
+          else
+            uv run --with packaging python scripts/regenerate.py --latest
+          fi
+      - name: Open the bump PR
+        run: |
+          set -euo pipefail
+          if git diff --quiet Formula/analog.rb; then
+            echo "already current, nothing to do"
+            exit 0
+          fi
+          VERSION="$(grep -oE 'analog_sdk-[0-9][^-]*' Formula/analog.rb | head -1 | cut -d- -f2)"
+          BRANCH="bump/analog-sdk-$VERSION"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add Formula/analog.rb
+          git commit -m "analog $VERSION"
+          git push -u origin "$BRANCH" --force
+          gh pr create \
+            --title "analog $VERSION" \
+            --body "Regenerated for analog-sdk $VERSION. CI does the real proving: audit, install, smoke, and the generator diff." \
+            || echo "PR already open for $BRANCH"

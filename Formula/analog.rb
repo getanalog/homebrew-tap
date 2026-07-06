@@ -5,8 +5,8 @@ class Analog < Formula
 
   desc "Turn webpages into structured data"
   homepage "https://getanalog.io"
-  url "https://files.pythonhosted.org/packages/ac/87/2987c1e40071abaae0e8b5d5b9482d1a585d24eeb43dff11e35c9e86e35b/analog_sdk-0.11.0-py3-none-any.whl", using: :nounzip
-  sha256 "66b24ab554bcfa2677640bd6a7130615a7c62f994b0bc1c61a6ee4b5dce97066"
+  url "https://files.pythonhosted.org/packages/07/8b/9102d8065d18abe8255dc35b42100a3db7ca7524ed5a92afbf695df71e33/analog_sdk-0.12.0-py3-none-any.whl", using: :nounzip
+  sha256 "211cd6c72365af1eeec2b5b752259f00a577f7c3302ba54c8c8f8ff902f51d84"
   license "MIT"
 
   # brew audit wants these for the pyyaml/lxml resources (it assumes
@@ -26,11 +26,6 @@ class Analog < Formula
   resource "anyio" do
     url "https://files.pythonhosted.org/packages/b0/7b/90df4a0a816d98d6ea26f559d87836d494a2cf1fcf063be67df50a7bcc30/anyio-4.14.1-py3-none-any.whl", using: :nounzip
     sha256 "4e5533c5b8ff0a24f5d7a176cbe6877129cd183893f66b537f8f227d10527d72"
-  end
-
-  resource "beautifulsoup4" do
-    url "https://files.pythonhosted.org/packages/88/c6/92fcd42f1ba33e1184263f25bfabf3d27c383410470f169e4b8163bf9c17/beautifulsoup4-4.15.0-py3-none-any.whl", using: :nounzip
-    sha256 "d6f88de62e1d4e38ecb1077eb9724cd0eff29d2a08ca16a401e9b9e93f117cf9"
   end
 
   resource "certifi" do
@@ -68,26 +63,6 @@ class Analog < Formula
     sha256 "7f952cbe720b688055e3f87de14f5c3e5fdaa8bc3928985c4077ca689de849a2"
   end
 
-  resource "jaraco-classes" do
-    url "https://files.pythonhosted.org/packages/7f/66/b15ce62552d84bbfcec9a4873ab79d993a1dd4edb922cbfccae192bd5b5f/jaraco.classes-3.4.0-py3-none-any.whl", using: :nounzip
-    sha256 "f662826b6bed8cace05e7ff873ce0f9283b5c924470fe664fff1c2f00f581790"
-  end
-
-  resource "jaraco-context" do
-    url "https://files.pythonhosted.org/packages/f2/58/bc8954bda5fcda97bd7c19be11b85f91973d67a706ed4a3aec33e7de22db/jaraco_context-6.1.2-py3-none-any.whl", using: :nounzip
-    sha256 "bf8150b79a2d5d91ae48629d8b427a8f7ba0e1097dd6202a9059f29a36379535"
-  end
-
-  resource "jaraco-functools" do
-    url "https://files.pythonhosted.org/packages/96/9a/982e48afcffcd727a9144506720ffd4224b6b7e355c98641866f38b7c043/jaraco_functools-4.5.0-py3-none-any.whl", using: :nounzip
-    sha256 "79ce39246eddbde4b3a03b77ea5f0f7878dc669b166a66cf3fa8e266aa3fa2f4"
-  end
-
-  resource "keyring" do
-    url "https://files.pythonhosted.org/packages/81/db/e655086b7f3a705df045bf0933bdd9c2f79bb3c97bfef1384598bb79a217/keyring-25.7.0-py3-none-any.whl", using: :nounzip
-    sha256 "be4a0b195f149690c166e850609a477c532ddbfbaed96a404d4e43f8d5e2689f"
-  end
-
   resource "lxml" do
     on_arm do
       url "https://files.pythonhosted.org/packages/a5/eb/7e6f37c5584ccbb2ff267f56fd0339016938c1c8684cfefab9b33ffc2f36/lxml-6.1.1-cp313-cp313-macosx_10_13_universal2.whl", using: :nounzip
@@ -104,19 +79,9 @@ class Analog < Formula
     sha256 "9f7ebbcd14fe59494226453aed97c1070d83f8d24b6fc3a3bcf9a38092641c4a"
   end
 
-  resource "markdownify" do
-    url "https://files.pythonhosted.org/packages/04/10/fa543d484e8b1199243fe20eedd02cc5af050edebce98a7293a5773df592/markdownify-1.2.3-py3-none-any.whl", using: :nounzip
-    sha256 "a189a0bedfd14009030fde5f85bb6f77c56897cb839b5c25315dd7d4e3e290ba"
-  end
-
   resource "mdurl" do
     url "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl", using: :nounzip
     sha256 "84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"
-  end
-
-  resource "more-itertools" do
-    url "https://files.pythonhosted.org/packages/e8/3d/1087453384dbde46a8c7f9356eead2c58be8a7bf156bca40243377c85715/more_itertools-11.1.0-py3-none-any.whl", using: :nounzip
-    sha256 "4b65538ae22f6fed0ce4874efd317463a7489796a0939fa66824dd542125a192"
   end
 
   resource "playwright" do
@@ -175,16 +140,6 @@ class Analog < Formula
   resource "rich" do
     url "https://files.pythonhosted.org/packages/82/3b/64d4899d73f91ba49a8c18a8ff3f0ea8f1c1d75481760df8c68ef5235bf5/rich-15.0.0-py3-none-any.whl", using: :nounzip
     sha256 "33bd4ef74232fb73fe9279a257718407f169c09b78a87ad3d296f548e27de0bb"
-  end
-
-  resource "six" do
-    url "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", using: :nounzip
-    sha256 "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
-  end
-
-  resource "soupsieve" do
-    url "https://files.pythonhosted.org/packages/5e/f5/0c41cb68dcae6b7de4fac4188a3a9589e21fb31df21ea3a2e888db95e6c9/soupsieve-2.8.4-py3-none-any.whl", using: :nounzip
-    sha256 "e7e6b0769c8f51ed59acab6e994b00621096cfb1c640a7509295987388fbaf65"
   end
 
   resource "typing-extensions" do

@@ -5,8 +5,8 @@ class Analog < Formula
 
   desc "Turn webpages into structured data"
   homepage "https://getanalog.io"
-  url "https://files.pythonhosted.org/packages/07/8b/9102d8065d18abe8255dc35b42100a3db7ca7524ed5a92afbf695df71e33/analog_sdk-0.12.0-py3-none-any.whl", using: :nounzip
-  sha256 "211cd6c72365af1eeec2b5b752259f00a577f7c3302ba54c8c8f8ff902f51d84"
+  url "https://files.pythonhosted.org/packages/bd/19/a4a945aadc57e1869c3b0a3c5a31fac6086e389d62a5e6bf2d53d7ee7538/analog_sdk-0.12.1-py3-none-any.whl", using: :nounzip
+  sha256 "da0f2cfcfd9a1d852882aea2c2bcfb7700a6d05fca61e344c159d3f1513a99ff"
   license "MIT"
 
   # brew audit wants these for the pyyaml/lxml resources (it assumes

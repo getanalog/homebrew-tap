@@ -5,8 +5,8 @@ class Analog < Formula
 
   desc "Turn webpages into structured data"
   homepage "https://getanalog.io"
-  url "https://files.pythonhosted.org/packages/7d/94/7e83107224af2006af3fd527ec9adca4f3b22d52a6768b8a7b107f42f59f/analog_sdk-0.13.0-py3-none-any.whl", using: :nounzip
-  sha256 "83667444d52a02a9e1a467b05cf93e4777d2ab5ab49ff7d08fe215d67d21f745"
+  url "https://files.pythonhosted.org/packages/3a/05/043c910d880703dec93ad839254cc4ae2abeb2a8b46b8147cb4d27487bfd/analog_sdk-0.14.0-py3-none-any.whl", using: :nounzip
+  sha256 "b67cf6c8cf5cd836b98de6bee294624dc75afd2b6f1fdfdb38874a71f53eb519"
   license "MIT"
 
   # brew audit wants these for the pyyaml/lxml resources (it assumes
@@ -24,8 +24,8 @@ class Analog < Formula
   end
 
   resource "anyio" do
-    url "https://files.pythonhosted.org/packages/b0/7b/90df4a0a816d98d6ea26f559d87836d494a2cf1fcf063be67df50a7bcc30/anyio-4.14.1-py3-none-any.whl", using: :nounzip
-    sha256 "4e5533c5b8ff0a24f5d7a176cbe6877129cd183893f66b537f8f227d10527d72"
+    url "https://files.pythonhosted.org/packages/da/35/f2287558c17e29fafc8ef3daf819bb9834061cfa43bff8014f7df7f63bdc/anyio-4.14.2-py3-none-any.whl", using: :nounzip
+    sha256 "9f505dda5ac9f0c8309b5e8bd445a8c2bf7246f3ce950121e45ea15bc41d1494"
   end
 
   resource "certifi" do

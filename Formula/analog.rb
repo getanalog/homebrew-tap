@@ -5,8 +5,8 @@ class Analog < Formula
 
   desc "Turn webpages into structured data"
   homepage "https://getanalog.io"
-  url "https://files.pythonhosted.org/packages/66/4f/d6335a1b622dd2bfb555744ff50a30ed44f39e3af4627c3fadd416356e83/analog_sdk-0.15.0-py3-none-any.whl", using: :nounzip
-  sha256 "c020f51165103d440cb9b76a7dea01cbae55e191250a02ada06dba4e822b8301"
+  url "https://files.pythonhosted.org/packages/43/a1/27672abf0e1e9059fab4030dbe7dec01af0f75317ae08fb07b9d1f2c63c1/analog_sdk-0.16.0-py3-none-any.whl", using: :nounzip
+  sha256 "59e0e907c3e1c067aaaffb71ee65d429397e6b9a61308def0f35bbb79cedca54"
   license "MIT"
 
   # brew audit wants these for the pyyaml/lxml resources (it assumes
@@ -19,8 +19,8 @@ class Analog < Formula
   uses_from_macos "libxslt"
 
   resource "annotated-types" do
-    url "https://files.pythonhosted.org/packages/78/b6/6307fbef88d9b5ee7421e68d78a9f162e0da4900bc5f5793f6d3d0e34fb8/annotated_types-0.7.0-py3-none-any.whl", using: :nounzip
-    sha256 "1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53"
+    url "https://files.pythonhosted.org/packages/99/91/8acff4f5e50511b911bbccb72b8628a49c68ce14148cd9f6431094859a90/annotated_types-0.8.0-py3-none-any.whl", using: :nounzip
+    sha256 "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0"
   end
 
   resource "anyio" do
@@ -29,8 +29,8 @@ class Analog < Formula
   end
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/ef/2f/c5464532e965badff2f4c4c1a3a83f5697f0d7c407ed0cda44aaa99bb451/certifi-2026.6.17-py3-none-any.whl", using: :nounzip
-    sha256 "2227dcbaafe0d2f59279d1762ddddc37783ed4354594f194ffc31d20f41fc3db"
+    url "https://files.pythonhosted.org/packages/0b/a7/71ac2cff56fec219ed242bb11b8efb69fcc4bec75db06fb7bfe35de520e6/certifi-2026.7.22-py3-none-any.whl", using: :nounzip
+    sha256 "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775"
   end
 
   resource "click" do
@@ -38,9 +38,14 @@ class Analog < Formula
     sha256 "e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76"
   end
 
+  resource "filelock" do
+    url "https://files.pythonhosted.org/packages/06/79/b4c714bef36bc4ec2beeae1e0c124f0223888cd8c6feb1cdc56038116920/filelock-3.32.0-py3-none-any.whl", using: :nounzip
+    sha256 "d396bea984af47333ef05e50eae7eff88c84256de6112aea0ec48a233c064fe3"
+  end
+
   resource "greenlet" do
-    url "https://files.pythonhosted.org/packages/9b/ff/a620267401db30a50cc8450ee90730e2d4a85658c055c0e760d4ed47fb13/greenlet-3.5.3-cp313-cp313-macosx_11_0_universal2.whl", using: :nounzip
-    sha256 "c8d87c2134d871df96ecdea9cec7cbaab286dadab0f56476e57aaf9e8ac11550"
+    url "https://files.pythonhosted.org/packages/c0/9a/e51225dcd58713f16ccbdcc501a8da21098ea14515b7870f1f94459e5ff5/greenlet-3.5.4-cp313-cp313-macosx_11_0_universal2.whl", using: :nounzip
+    sha256 "24e61b88cb7e1b1d794b32a10cc346ac779681d6d74ff137a3e0a444d2bf1f02"
   end
 
   resource "h11" do

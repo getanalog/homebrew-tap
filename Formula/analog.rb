@@ -5,8 +5,8 @@ class Analog < Formula
 
   desc "Turn webpages into structured data"
   homepage "https://getanalog.io"
-  url "https://files.pythonhosted.org/packages/43/a1/27672abf0e1e9059fab4030dbe7dec01af0f75317ae08fb07b9d1f2c63c1/analog_sdk-0.16.0-py3-none-any.whl", using: :nounzip
-  sha256 "59e0e907c3e1c067aaaffb71ee65d429397e6b9a61308def0f35bbb79cedca54"
+  url "https://files.pythonhosted.org/packages/3f/a0/e8fad1feafb6e908f567826c3936768952f468b4d474fd5a806d0ed93ae3/analog_sdk-0.17.0-py3-none-any.whl", using: :nounzip
+  sha256 "1d621cb0c883eb753c4a6cefd5b9a92c8804775a86a2c61c4ee95e6d2f2033c4"
   license "MIT"
 
   # brew audit wants these for the pyyaml/lxml resources (it assumes
@@ -26,6 +26,17 @@ class Analog < Formula
   resource "anyio" do
     url "https://files.pythonhosted.org/packages/da/35/f2287558c17e29fafc8ef3daf819bb9834061cfa43bff8014f7df7f63bdc/anyio-4.14.2-py3-none-any.whl", using: :nounzip
     sha256 "9f505dda5ac9f0c8309b5e8bd445a8c2bf7246f3ce950121e45ea15bc41d1494"
+  end
+
+  resource "backports-zstd" do
+    on_arm do
+      url "https://files.pythonhosted.org/packages/5e/b6/9479e6f0f18824ad38e8d7dd85161ab0842a198be669421232925bb30960/backports_zstd-1.6.0-cp313-cp313-macosx_11_0_arm64.whl", using: :nounzip
+      sha256 "4b6c8b02ab0ccb2431bb7bc238be91d158b308915e7b07937388e540466fe7e7"
+    end
+    on_intel do
+      url "https://files.pythonhosted.org/packages/5c/39/87cf3d883d386c10ac52f5322604fb9afdd204229f4c47d4a820a839b8ff/backports_zstd-1.6.0-cp313-cp313-macosx_10_13_x86_64.whl", using: :nounzip
+      sha256 "5918fc6b31437208721276964323933cd86077b8d5b469c59c1b3fd2c8220a05"
+    end
   end
 
   resource "certifi" do

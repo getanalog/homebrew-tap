@@ -50,8 +50,8 @@ class Analog < Formula
   end
 
   resource "filelock" do
-    url "https://files.pythonhosted.org/packages/06/79/b4c714bef36bc4ec2beeae1e0c124f0223888cd8c6feb1cdc56038116920/filelock-3.32.0-py3-none-any.whl", using: :nounzip
-    sha256 "d396bea984af47333ef05e50eae7eff88c84256de6112aea0ec48a233c064fe3"
+    url "https://files.pythonhosted.org/packages/c1/e8/72f8cef9fdfeffe06213fe8508039396ee48daa0e3259457ed766173bfd6/filelock-3.32.2-py3-none-any.whl", using: :nounzip
+    sha256 "87dd94cf281e586d135fa51132b8e3d9a598b316e90377a288663c9321036c82"
   end
 
   resource "greenlet" do
@@ -102,12 +102,12 @@ class Analog < Formula
 
   resource "playwright" do
     on_arm do
-      url "https://files.pythonhosted.org/packages/42/35/71395dd3ecc798965be4a3ef8c443217d4abca168e7cb34536304f9489e6/playwright-1.61.0-py3-none-macosx_11_0_arm64.whl", using: :nounzip
-      sha256 "009588c2a7e499bc5a8b425b61fa65490968bbda9cd69e0cf2cff10f8304659a"
+      url "https://files.pythonhosted.org/packages/af/1a/0bfbe9904350961f4dbb713f04342e40d548c5fc26c8157bd13617c81492/playwright-1.62.0-py3-none-macosx_11_0_arm64.whl", using: :nounzip
+      sha256 "db755ab27db21a04186f1fe8169888e42356086e439b1059b923ef417f0b6034"
     end
     on_intel do
-      url "https://files.pythonhosted.org/packages/f4/44/323164cf5cd1647bdefce76ffce27651aadb959d089b48f53ea40918276e/playwright-1.61.0-py3-none-macosx_11_0_universal2.whl", using: :nounzip
-      sha256 "9f7de4536088d12037c13a52b7ea34b59270b78926bb56935070597ffac6b1af"
+      url "https://files.pythonhosted.org/packages/66/dc/c0486b407ad0699a250f6bbe3066fca95344009a99ca66e88ca175c69dc1/playwright-1.62.0-py3-none-macosx_11_0_universal2.whl", using: :nounzip
+      sha256 "5108bd5b3e87169ddf269feee097da5893af7f8aea4634dfc840518d64c1f1da"
     end
   end
 

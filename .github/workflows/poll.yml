@@ -1,5 +1,7 @@
-# Daily check that the formula hasn't fallen behind PyPI. If it has,
-# run the same bump the maintainer would have dispatched.
+# Daily check that the formula hasn't fallen behind PyPI — a newer
+# analog-sdk, or a transitive release that moved a pinned resource. If
+# it has, run the same bump the maintainer would have dispatched; the
+# bump names its PR a version bump or a resource refresh accordingly.
 name: Poll PyPI
 
 on:
@@ -23,7 +25,7 @@ jobs:
       - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # ratchet:astral-sh/setup-uv@v9.0.0
         with:
           enable-cache: false
-      - name: Compare the formula pin against PyPI
+      - name: Compare the formula pin and resources against PyPI
         id: check
         run: |
           set -euo pipefail

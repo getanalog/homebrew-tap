@@ -9,6 +9,12 @@ bump workflow and the poller both do).
     uv run --with packaging python scripts/regenerate.py --latest
     uv run --with packaging python scripts/regenerate.py --check
 
+--check answers two questions the daily poller asks: does the pinned
+analog-sdk version lag PyPI's latest, and — when it doesn't — has the
+resolved resource set drifted (a transitive release moved a wheel the
+formula pins)? Either is exit 1; the poller then runs the bump, which
+regenerates and opens the PR (a version bump or a resource refresh).
+
 Needs uv on PATH and network access to pypi.org. Hashes come from the
 PyPI JSON API, same data pip verifies against.
 """
@@ -239,18 +245,28 @@ def main() -> int:
     group.add_argument(
         "--check",
         action="store_true",
-        help="exit 1 (and print the lag) if the formula pins less than PyPI's latest",
+        help=(
+            "exit 1 (and say why) if the formula pins less than PyPI's latest "
+            "or its resolved resources drifted from what the generator produces now"
+        ),
     )
     args = parser.parse_args()
 
     if args.check:
         latest = pypi_latest_version(PACKAGE)
         pinned = formula_pinned_version()
-        if pinned == latest:
-            print(f"formula is current: {pinned}")
-            return 0
-        print(f"formula lags: pinned={pinned} latest={latest}")
-        return 1
+        if pinned != latest:
+            print(f"formula lags: pinned={pinned} latest={latest}")
+            return 1
+        # Same version, but the resource set is re-resolved on every
+        # generation: a transitive release moves a pinned wheel and the
+        # CI "matches the generator" diff goes red on every PR until
+        # someone regenerates. Catch it here so the poller does.
+        if render(pinned) != FORMULA.read_text():
+            print(f"formula resources drifted: pinned={pinned}, regenerate to refresh")
+            return 1
+        print(f"formula is current: {pinned}")
+        return 0
 
     version = pypi_latest_version(PACKAGE) if args.latest else args.version
     FORMULA.write_text(render(version))

@@ -78,6 +78,11 @@ jobs:
           TAPDIR="$(brew --repository)/Library/Taps/getanalog"
           mkdir -p "$TAPDIR"
           ln -sfn "$GITHUB_WORKSPACE" "$TAPDIR/homebrew-tap"
+          # Homebrew requires tap trust; without it every brew command
+          # prints an "untrusted taps" block today and will refuse the
+          # tap outright once the escape hatch is removed. Whole-tap
+          # trust is right for the tap's own CI.
+          brew trust getanalog/tap
       - name: brew style
         run: brew style getanalog/tap
       - name: brew audit

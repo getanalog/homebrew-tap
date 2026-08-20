@@ -5,8 +5,8 @@ class Analog < Formula
 
   desc "Turn webpages into structured data"
   homepage "https://getanalog.io"
-  url "https://files.pythonhosted.org/packages/bb/95/75301054cf491251a1747786c412eeef58c44081e0c3ffe81ee15d147e70/analog_sdk-0.18.0-py3-none-any.whl", using: :nounzip
-  sha256 "3551b239da45d339e52fd80ac9f7e6e5567ec13177ae30e2aee4f4f728a7389f"
+  url "https://files.pythonhosted.org/packages/46/cf/ed92867946219e3f2e534ad7a80c3c90f92f840d0c3387974d83c6d9908a/analog_sdk-0.19.0-py3-none-any.whl", using: :nounzip
+  sha256 "b5d9c209b798017724d3cc67c5f928d9e92688af665b30844513ee65b20bbc39"
   license "MIT"
 
   # brew audit wants these for the pyyaml/lxml resources (it assumes
@@ -81,13 +81,18 @@ class Analog < Formula
 
   resource "lxml" do
     on_arm do
-      url "https://files.pythonhosted.org/packages/a5/eb/7e6f37c5584ccbb2ff267f56fd0339016938c1c8684cfefab9b33ffc2f36/lxml-6.1.1-cp313-cp313-macosx_10_13_universal2.whl", using: :nounzip
-      sha256 "68a9198d0fc122d14bb76837de9aa80cf84caed990b5b237f532ed87d3706736"
+      url "https://files.pythonhosted.org/packages/61/2a/e9651f47a31a60b5cae031abc23391ed9aa30c8fc07571d1a38f58d6d770/lxml-6.1.2-cp313-cp313-macosx_10_13_universal2.whl", using: :nounzip
+      sha256 "351318f5c0eb7fcab5b4fdb507c6f88fb2c4b5e67784c7e5911448c91fffb5d4"
     end
     on_intel do
-      url "https://files.pythonhosted.org/packages/a1/36/587c2521cf23a2cd6c9c22108aa7528f683a1f195ed7ccd23a4b1786ad36/lxml-6.1.1-cp313-cp313-macosx_10_13_x86_64.whl", using: :nounzip
-      sha256 "7d47866cb32fb503450b6edc9df355d10dc49836af2e89901bd6ac6b0896d9d9"
+      url "https://files.pythonhosted.org/packages/61/87/a8098abaf35118767d1703b84c98940a5d833064e0eca39a00ecfe9840ab/lxml-6.1.2-cp313-cp313-macosx_10_13_x86_64.whl", using: :nounzip
+      sha256 "c0edde95e4b4278dcc0175eda06dc8aa2631ad9f83ae5dbdbc4f0925e200b0b0"
     end
+  end
+
+  resource "marcato" do
+    url "https://files.pythonhosted.org/packages/60/1a/2e90e3cca0e30ebed8b883b59d7284d6ef60e8c757dcafdb6ca14352c38c/marcato-0.3.0-py3-none-any.whl", using: :nounzip
+    sha256 "5e588e8c48272b43d0cf15c34844a5c6c119d8ab771c41e459781cec5e5c0133"
   end
 
   resource "markdown-it-py" do

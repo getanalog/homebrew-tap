@@ -5,8 +5,8 @@ class Analog < Formula
 
   desc "Turn webpages into structured data"
   homepage "https://getanalog.io"
-  url "https://files.pythonhosted.org/packages/46/cf/ed92867946219e3f2e534ad7a80c3c90f92f840d0c3387974d83c6d9908a/analog_sdk-0.19.0-py3-none-any.whl", using: :nounzip
-  sha256 "b5d9c209b798017724d3cc67c5f928d9e92688af665b30844513ee65b20bbc39"
+  url "https://files.pythonhosted.org/packages/1e/08/7bf3f286d3777724f718b996c1a5a3ccb8be790a1b8a7d44815fd5a86baf/analog_sdk-0.20.0-py3-none-any.whl", using: :nounzip
+  sha256 "98a66670db0d53887fc71a7e641f0be635003d98289a125176d296102a25ab30"
   license "MIT"
 
   # brew audit wants these for the pyyaml/lxml resources (it assumes
@@ -91,8 +91,8 @@ class Analog < Formula
   end
 
   resource "marcato" do
-    url "https://files.pythonhosted.org/packages/60/1a/2e90e3cca0e30ebed8b883b59d7284d6ef60e8c757dcafdb6ca14352c38c/marcato-0.3.0-py3-none-any.whl", using: :nounzip
-    sha256 "5e588e8c48272b43d0cf15c34844a5c6c119d8ab771c41e459781cec5e5c0133"
+    url "https://files.pythonhosted.org/packages/03/9c/166a11f7427a0cc677a7c7585a8b8178bee1a6ace55997cc57c031bc1647/marcato-0.4.0-py3-none-any.whl", using: :nounzip
+    sha256 "94a8e62a39d992729bbd7d7c5789067f36b0997a6c292ac09793f7b118711c60"
   end
 
   resource "markdown-it-py" do

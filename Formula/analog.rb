@@ -50,8 +50,8 @@ class Analog < Formula
   end
 
   resource "filelock" do
-    url "https://files.pythonhosted.org/packages/01/fb/0e4489505dac46a0487ba925ea4b046612f1a40f432d63a000421de78549/filelock-4.0.0-py3-none-any.whl", using: :nounzip
-    sha256 "a850aa9ec2acba8db9ca2e9fcf8a327fbc2f85e432725715b37bd76b7dd1f798"
+    url "https://files.pythonhosted.org/packages/29/33/af0635ab07fe83b1788a1dbe370ff3e226062495a998335cb18a1cac81aa/filelock-4.0.1-py3-none-any.whl", using: :nounzip
+    sha256 "481a321a27bef441e23c53371c6abc8d7d16e26b97090074ba44f7538a3fd55a"
   end
 
   resource "greenlet" do

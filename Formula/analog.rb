@@ -50,8 +50,8 @@ class Analog < Formula
   end
 
   resource "filelock" do
-    url "https://files.pythonhosted.org/packages/01/fb/0e4489505dac46a0487ba925ea4b046612f1a40f432d63a000421de78549/filelock-4.0.0-py3-none-any.whl", using: :nounzip
-    sha256 "a850aa9ec2acba8db9ca2e9fcf8a327fbc2f85e432725715b37bd76b7dd1f798"
+    url "https://files.pythonhosted.org/packages/7a/6d/db8b86e168fef0cf904737e275bccb683558088ef971e92d3b41ce980699/filelock-4.0.3-py3-none-any.whl", using: :nounzip
+    sha256 "30cd166e2aee2c7534ce2c33c6367c4cd051b8368e20e2c4eb0c34f699bacfab"
   end
 
   resource "greenlet" do
@@ -117,8 +117,8 @@ class Analog < Formula
   end
 
   resource "protego" do
-    url "https://files.pythonhosted.org/packages/61/10/cbd3c06603bb8b3e0e871df24ee793a6e3b53d8c4cc8763f1b8b936649aa/protego-0.6.2-py3-none-any.whl", using: :nounzip
-    sha256 "714de21d82527c9be900066c3211b266985dd6a19b6e70c57e033fc1a589f3ff"
+    url "https://files.pythonhosted.org/packages/c0/20/e4382a85e4cf4746d11746481f83360b990165725dd36ba73d55e029e6a9/protego-0.7.0-py3-none-any.whl", using: :nounzip
+    sha256 "944638aaee608f6c83fcad442695f3f9381a60be8d5007248f46b00f201fa5fc"
   end
 
   resource "pydantic" do

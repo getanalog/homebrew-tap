@@ -69,6 +69,11 @@ jobs:
       - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # ratchet:astral-sh/setup-uv@v10.1.0
         with:
           enable-cache: false
+      - name: Generator regression tests
+        run: uv run --with packaging python scripts/test_regenerate.py
+      - name: Formula matches the generator
+        # Validate the reviewed pins; newer releases belong to the poller.
+        run: uv run --with packaging python scripts/regenerate.py --verify
       - name: Register this checkout as the tap
         run: |
           # The runner image ships third-party taps (aws/tap) that
@@ -96,11 +101,3 @@ jobs:
           "$(brew --prefix)/bin/analog" --help
       - name: brew test
         run: brew test getanalog/tap/analog
-      - name: Formula matches the generator
-        # no hand-edited pins sneaking in
-        run: |
-          set -euo pipefail
-          VERSION="$("$(brew --prefix)/bin/analog" --version | awk '{print $3}')"
-          cp Formula/analog.rb /tmp/committed.rb
-          uv run --with packaging python scripts/regenerate.py --version "$VERSION"
-          diff -u /tmp/committed.rb Formula/analog.rb

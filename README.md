@@ -31,8 +31,16 @@ Prefer pip? The same CLI ships on PyPI: `uv tool install analog-sdk`.
 brew's python with every dependency as a hash-pinned wheel. pip runs
 with `--no-index --no-deps`, so nothing gets resolved or fetched at
 install time beyond what brew already checksummed, and installs take
-seconds. Don't edit the pins by hand; CI diffs the formula against the
-generator's output and will fail the PR.
+seconds. Don't edit the pins by hand. CI runs the generator's `--verify`
+mode: it checks that the committed versions satisfy the SDK's dependencies
+on both Mac architectures, then compares the complete formula with output
+generated from PyPI's wheel URLs and hashes. Newer dependency releases do
+not change those pins during verification. Missing, incompatible or extra
+dependencies, changed hashes and edits to generated structure fail the PR.
+
+The `--check` mode separately checks for a newer SDK or dependency resolution.
+The daily poller uses it to request updates; `--latest` and `--version`
+continue resolving current dependencies when generating those updates.
 
 To ship a new version: run the "Bump formula" workflow after the PyPI
 release. A daily poller opens the bump PR if that gets forgotten.

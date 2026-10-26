@@ -8,12 +8,18 @@ bump workflow and the poller both do).
     uv run --with packaging python scripts/regenerate.py --version 0.10.0
     uv run --with packaging python scripts/regenerate.py --latest
     uv run --with packaging python scripts/regenerate.py --check
+    uv run --with packaging python scripts/regenerate.py --verify
 
 --check answers two questions the daily poller asks: does the pinned
 analog-sdk version lag PyPI's latest, and — when it doesn't — has the
 resolved resource set drifted (a transitive release moved a wheel the
 formula pins)? Either is exit 1; the poller then runs the bump, which
 regenerates and opens the PR (a version bump or a resource refresh).
+
+--verify validates the committed formula without selecting newer versions.
+Its wheel filenames supply constraints, not extra root requirements: the
+SDK's dependency metadata must reach exactly that set on both architectures.
+Rendering from PyPI's release metadata then checks URLs, hashes and structure.
 
 Needs uv on PATH and network access to pypi.org. Hashes come from the
 PyPI JSON API, same data pip verifies against.
@@ -26,8 +32,10 @@ import json
 import re
 import subprocess
 import sys
+import tempfile
 import urllib.request
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 from packaging.tags import compatible_tags, cpython_tags, mac_platforms
 from packaging.utils import canonicalize_name, parse_wheel_filename
@@ -47,7 +55,7 @@ def acceptable_tags(arch: str) -> list:
     return tags
 
 
-def resolve_tree(version: str) -> dict[str, str]:
+def resolve_tree(version: str, constraints: Path | None = None) -> dict[str, str]:
     """name -> version for the macOS runtime tree of analog-sdk==version.
 
     Resolved with an explicit --python-platform so the tree is the
@@ -60,10 +68,18 @@ def resolve_tree(version: str) -> dict[str, str]:
     for platform in ("aarch64-apple-darwin", "x86_64-apple-darwin"):
         compiled = run(
             [
-                "uv", "pip", "compile", "-",
-                "--python-platform", platform,
-                "--python-version", f"{PYTHON_MINOR[0]}.{PYTHON_MINOR[1]}",
-                "--no-header", "--no-annotate", "--quiet",
+                "uv",
+                "pip",
+                "compile",
+                "-",
+                "--python-platform",
+                platform,
+                "--python-version",
+                f"{PYTHON_MINOR[0]}.{PYTHON_MINOR[1]}",
+                "--no-header",
+                "--no-annotate",
+                "--quiet",
+                *(["--constraint", str(constraints)] if constraints else []),
             ],
             stdin=f"{PACKAGE}=={version}\n",
             capture=True,
@@ -156,8 +172,17 @@ def resource_block(name: str, version: str) -> str:
     return f'  resource "{name}" do\n{body}  end\n'
 
 
-def render(version: str) -> str:
-    tree = resolve_tree(version)
+def render(version: str, constraints: Path | None = None) -> str:
+    tree = resolve_tree(version, constraints)
+    if constraints is not None:
+        expected = dict(
+            line.split("==") for line in constraints.read_text().splitlines()
+        )
+        if tree != expected:
+            raise ValueError(
+                "committed wheels are not exactly the SDK dependency tree; "
+                "regenerate through the bump workflow and review the resource changes"
+            )
     sdk_version = tree.pop(PACKAGE)
     assert sdk_version == version, f"resolved {sdk_version}, expected {version}"
 
@@ -237,11 +262,49 @@ def formula_pinned_version() -> str | None:
     return match.group(1) if match else None
 
 
+def formula_pins(text: str) -> dict[str, str]:
+    """Read versions only; render equality validates the full formula syntax."""
+    pins: dict[str, str] = {}
+    for url in re.findall(r'^\s*url "([^"]+)"', text, re.MULTILINE):
+        filename = unquote(urlsplit(url).path.rsplit("/", 1)[-1])
+        name, version, _, _ = parse_wheel_filename(filename)
+        if name in pins and pins[name] != str(version):
+            raise ValueError(f"conflicting wheel versions for {name}")
+        pins[name] = str(version)
+    if PACKAGE not in pins:
+        raise ValueError("formula has no SDK wheel")
+    return pins
+
+
+def verify_formula() -> int:
+    """Verify without writing the formula or asking for the latest SDK."""
+    text = FORMULA.read_text()
+    pins = formula_pins(text)
+    with tempfile.TemporaryDirectory() as directory:
+        constraints = Path(directory) / "constraints.txt"
+        constraints.write_text(
+            "".join(f"{name}=={ver}\n" for name, ver in sorted(pins.items()))
+        )
+        expected = render(pins[PACKAGE], constraints)
+    if text != expected:
+        raise ValueError(
+            "formula differs from the generated URLs, hashes or structure; "
+            "regenerate through the bump workflow and review the changes"
+        )
+    print(f"formula integrity verified: {PACKAGE}=={pins[PACKAGE]}")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--version", help="analog-sdk version to pin")
     group.add_argument("--latest", action="store_true", help="pin PyPI's latest")
+    group.add_argument(
+        "--verify",
+        action="store_true",
+        help="validate the committed resolution, wheel URLs, hashes and formula structure",
+    )
     group.add_argument(
         "--check",
         action="store_true",
@@ -252,6 +315,15 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    if args.verify:
+        try:
+            return verify_formula()
+        except (ValueError, OSError, subprocess.CalledProcessError) as exc:
+            print(f"formula integrity failed: {exc}", file=sys.stderr)
+            if isinstance(exc, subprocess.CalledProcessError) and exc.stderr:
+                print(exc.stderr, file=sys.stderr)
+            return 1
+
     if args.check:
         latest = pypi_latest_version(PACKAGE)
         pinned = formula_pinned_version()
@@ -259,9 +331,8 @@ def main() -> int:
             print(f"formula lags: pinned={pinned} latest={latest}")
             return 1
         # Same version, but the resource set is re-resolved on every
-        # generation: a transitive release moves a pinned wheel and the
-        # CI "matches the generator" diff goes red on every PR until
-        # someone regenerates. Catch it here so the poller does.
+        # generation. Currency belongs here, separate from --verify's
+        # integrity check of the reviewed resolution.
         if render(pinned) != FORMULA.read_text():
             print(f"formula resources drifted: pinned={pinned}, regenerate to refresh")
             return 1

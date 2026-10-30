@@ -50,8 +50,8 @@ class Analog < Formula
   end
 
   resource "filelock" do
-    url "https://files.pythonhosted.org/packages/e0/1b/5e74289a1878e666bb4b65fe5805a04cafcac2aa5f519ef1ead67ef91c56/filelock-4.2.4-py3-none-any.whl", using: :nounzip
-    sha256 "301241438c57936ef93f4243a94f2559022268bfcf9b375a9a72eb0f8db8358e"
+    url "https://files.pythonhosted.org/packages/14/2d/2cf36eca330b7a97c0e9076e8fc4272127c29398fa2bb7b24d4321b8b476/filelock-4.2.5-py3-none-any.whl", using: :nounzip
+    sha256 "46ce42d27e5cdde09ee7197349663e97cb106679bd9e75db3a09679fbc7aa1a8"
   end
 
   resource "greenlet" do
@@ -122,18 +122,18 @@ class Analog < Formula
   end
 
   resource "pydantic" do
-    url "https://files.pythonhosted.org/packages/35/ea/a56b9fe5066f3537b7882f77e9c5dfb26d8c2eefdaed9b5fc73d57b4dc22/pydantic-2.14.1-py3-none-any.whl", using: :nounzip
-    sha256 "9195d967ec791692a04438115466764fb8b9a27b31f14a760437694f40d6b454"
+    url "https://files.pythonhosted.org/packages/97/01/c71a71258b58659c72504e5fd65b451f6e36e34dc931d0b237ded213c814/pydantic-2.14.2-py3-none-any.whl", using: :nounzip
+    sha256 "7efbf7507b937931cd32a5755acb00ea1cf5ccb1d4e8067a5850d5069e382118"
   end
 
   resource "pydantic-core" do
     on_arm do
-      url "https://files.pythonhosted.org/packages/f7/b9/c720e56858d4e1539503297ed37063e0c08e0f3541c41b777f6a800f75fa/pydantic_core-2.50.1-cp313-cp313-macosx_11_0_arm64.whl", using: :nounzip
-      sha256 "0c003c3b7f49debb893d2d85ae099ac5959c9839e2f330fadb1fcdf7a6594482"
+      url "https://files.pythonhosted.org/packages/f7/0b/7605223654ed4e777d05668e914d32b476b1fa2bb756bff9820fe270456b/pydantic_core-2.50.2-cp313-cp313-macosx_11_0_arm64.whl", using: :nounzip
+      sha256 "7c539d452cba22f250103c7d1c00cbe9038eb705e657476e701c43374efd9f2e"
     end
     on_intel do
-      url "https://files.pythonhosted.org/packages/ae/57/0e237d7091d2cd44a35d243b7344227f90440166860469cd036afc23a04d/pydantic_core-2.50.1-cp313-cp313-macosx_10_12_x86_64.whl", using: :nounzip
-      sha256 "d5e062c01286d861fd6a1c4ff6e063547b3e713067f2df033c0ff97ac2ca006b"
+      url "https://files.pythonhosted.org/packages/c2/fc/ac3ae9d934932ce3c380e7fe53e01372b49ef5dcb49db56f1a1f005b4d8c/pydantic_core-2.50.2-cp313-cp313-macosx_10_12_x86_64.whl", using: :nounzip
+      sha256 "93eb41d626d9a2749a678823c70bba8c25033cef474ae8001fd7621adbbd8437"
     end
   end
 
